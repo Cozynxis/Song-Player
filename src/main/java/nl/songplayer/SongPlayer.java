@@ -2,6 +2,7 @@ package nl.songplayer;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -20,9 +21,13 @@ public final class SongPlayer implements ClientModInitializer {
     private static SoundInstance currentSound;
     private static Identifier currentTrack;
     private static float volume = 1.0f;
+    private static boolean customPlaying = false;
 
     @Override
     public void onInitializeClient() {
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (customPlaying) client.getMusicManager().stopPlaying();
+        });
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
             dispatcher.register(literal("music").executes(ctx -> {
                 Minecraft.getInstance().execute(() -> Minecraft.getInstance().gui.setScreen(new MusicScreen()));
@@ -47,7 +52,9 @@ public final class SongPlayer implements ClientModInitializer {
 
     public static void play(Identifier id) {
         stop();
+        Minecraft.getInstance().getMusicManager().stopPlaying();
         currentTrack = id;
+        customPlaying = true;
         currentSound = new SimpleSoundInstance(id, SoundSource.MUSIC, volume, 1f,
             net.minecraft.util.RandomSource.create(), false, 0,
             SoundInstance.Attenuation.NONE, 0, 0, 0, true);
@@ -58,6 +65,7 @@ public final class SongPlayer implements ClientModInitializer {
         if (currentSound != null) Minecraft.getInstance().getSoundManager().stop(currentSound);
         currentSound = null;
         currentTrack = null;
+        customPlaying = false;
     }
     public static Identifier current() { return currentTrack; }
     public static float volume() { return volume; }
