@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "song_player",
+  "version": "${version}",
+  "name": "Song Player",
+  "description": "Choose Minecraft music with /music.",
+  "authors": ["Cozynxis"],
+  "environment": "client",
+  "entrypoints": { "client": ["nl.songplayer.SongPlayer"] },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
