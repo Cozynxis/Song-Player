@@ -37,12 +37,13 @@ public final class SongPlayer implements ClientModInitializer {
     }
 
     public static List<Identifier> tracks() {
+        // The sound manager includes client-side sounds loaded from sounds.json,
+        // which is broader than the server-side SOUND_EVENT registry.
         List<Identifier> tracks = new ArrayList<>();
-        for (SoundEvent sound : BuiltInRegistries.SOUND_EVENT) {
-            Identifier id = sound.location();
-            String p = id.getPath();
-            if (id.getNamespace().equals("minecraft") &&
-                (p.startsWith("music.") || p.startsWith("music_disc.") || p.startsWith("record."))) {
+        for (Identifier id : Minecraft.getInstance().getSoundManager().getAvailableSounds()) {
+            String name = id.getPath();
+            if (name.startsWith("music.") || name.startsWith("music_disc.")
+                || name.startsWith("record.") || name.startsWith("music_")) {
                 tracks.add(id);
             }
         }
