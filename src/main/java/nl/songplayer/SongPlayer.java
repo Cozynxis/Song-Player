@@ -42,7 +42,7 @@ public final class SongPlayer implements ClientModInitializer {
         List<Identifier> tracks = new ArrayList<>();
         for (Identifier id : Minecraft.getInstance().getSoundManager().getAvailableSounds()) {
             String name = id.getPath();
-            if (name.startsWith("music.") || name.startsWith("music_disc.")
+            if (name.startsWith("music.") || (id.getNamespace().equals("songplayer") && name.startsWith("track.")) || name.startsWith("music_disc.")
                 || name.startsWith("record.") || name.startsWith("music_")) {
                 tracks.add(id);
             }
