@@ -1,14 +1,13 @@
 plugins {
-    id 'fabric-loom' version '1.17.17'
+    id 'net.fabricmc.fabric-loom' version '1.17.17'
     id 'maven-publish'
 }
-version = '1.0.1'
+version = '1.0.2'
 group = 'nl.songplayer'
 base { archivesName = 'song-player' }
 repositories { mavenCentral() }
 dependencies {
     minecraft 'com.mojang:minecraft:26.3'
-    mappings 'net.fabricmc:intermediary:26.3'
     modImplementation 'net.fabricmc:fabric-loader:0.19.5'
     modImplementation 'net.fabricmc.fabric-api:fabric-api:0.165.0+26.3'
 }
